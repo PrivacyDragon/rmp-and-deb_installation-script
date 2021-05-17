@@ -13,10 +13,8 @@ if echo "$1" | grep -q ".deb"; then
   else echo "ERROR: file type of data archive was not understood"; fi #If the file is not a .gz file and not a .xz file, give an error.
   cd usr
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
-  if echo $PATH | grep /\.local/bin; then echo ""; #Yes, this can be better #TODO
-  else export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the PATH if it isn't yet.
-  if cat $HOME/.bashrc | grep /\.local/bin; then echo ""; #TODO make this better.
-  else echo "export PATH=$PATH:~/.local/bin"; fi
+  if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the PATH if it isn't yet.
+  if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
   cd ../../../
   rm -rf $tmpdir #Clean up the temporary dir.
   echo "Installation was successful!"
@@ -29,10 +27,8 @@ if echo "$1" | grep -q ".rpm"; then
   rpm2cpio $1 | cpio -id -D $tmpdir #Extract the rpm file.
   cd $tmpdir/usr
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
-  if echo $PATH | grep /\.local/bin; then echo ""; #TODO make this better.
-  else export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the path if it isn't yet.
-  if cat $HOE/.bashrc | grep /\.local/bin; then echo ""; #TODO make this better.
-  else echo "export PATH=$PATH:~/.local/bin"; fi
+  if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the path if it isn't yet.
+  if ! cat $HOE/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
   cd ../../../
   rm -rf $tmpdir #Clean up the temporary dir.
   echo "Installation was successful!"
