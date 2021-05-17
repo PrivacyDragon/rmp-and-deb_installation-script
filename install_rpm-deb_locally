@@ -28,7 +28,7 @@ if echo "$1" | grep -q ".rpm"; then
   cd $tmpdir/usr
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
   if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the path if it isn't yet.
-  if ! cat $HOE/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
+  if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
   cd ../../../
   rm -rf $tmpdir #Clean up the temporary dir.
   echo "Installation was successful!"
