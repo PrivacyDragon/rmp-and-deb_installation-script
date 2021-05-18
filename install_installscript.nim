@@ -10,6 +10,7 @@ try:
   let stupidnim = "\nTerminal=True\nType=Application\nCategories=Utility;"
   let desktop = &"{desktopfile}{stupidnim}"
   writeFile(expandTilde("~/.local/share/applications/local_installer.desktop"), desktop)
+  discard execShellCmd("echo \"export PATH=$PATH:~/.local/bin\" >> ~/.bashrc")
 except:
   echo "Oh no! Something went wrong!"
 
