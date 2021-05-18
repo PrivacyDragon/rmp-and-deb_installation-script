@@ -26,9 +26,7 @@ public class status : Label {
 	}
 }
 static int main (string[] args) {
-
     Gtk.init (ref args);
-
     var window = new Gtk.Window (Gtk.WindowType.TOPLEVEL);
     var grid = new Grid();
     grid.orientation = Orientation.HORIZONTAL;
@@ -43,7 +41,6 @@ var file_chooser = new FileChooserDialog ("Select File", window, FileChooserActi
                 installer((string)filename, stat);
         }
         file_chooser.destroy ();
-
 grid.attach (stat, 0,0,1,1);    
 window.add (grid);
     window.set_default_size (450, 50);
