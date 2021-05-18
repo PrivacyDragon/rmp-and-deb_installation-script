@@ -11,5 +11,5 @@ This is a script that locally isntalls .rpm and .deb files. this is ideal if you
 * There should also be a desktop entry.
 ### There is not much documentation yet, I will add more in the future.
 Use:
-CLI version: `local_installer <FILE>`
+CLI version: `local_installer <FILE>`<br>
 GUI version: `local_installer-gui`, select a file.
