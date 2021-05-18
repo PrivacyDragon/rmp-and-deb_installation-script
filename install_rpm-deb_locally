@@ -1,5 +1,6 @@
 #!/bin/sh
-
+#Why doesn't Github realize the .vala file is for the biggest part in shell script too?
+#Ugh, I hate this. It is NOT written in vala! It is written in Shell!
 echo "Application to install: " $1
 
 if echo "$1" | grep -q ".deb"; then
