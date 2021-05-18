@@ -9,7 +9,7 @@ try:
   let desktopfile = &"[Desktop Entry]\nName=LocalInstaller\nComment=Locally install programs\nExec=\"{shutUpNim}\""
   let stupidnim = "\nTerminal=True\nType=Application\nCategories=Utility;"
   let desktop = &"{desktopfile}{stupidnim}"
-  writeFile(expandTilde("~/.local/share/applications"), desktop)
+  writeFile(expandTilde("~/.local/share/applications/local_installer.desktop"), desktop)
 except:
   echo "Oh no! Something went wrong!"
 
