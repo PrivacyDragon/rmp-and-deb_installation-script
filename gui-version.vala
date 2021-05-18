@@ -19,22 +19,12 @@ Posix.system("""if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.l
 	Posix.system(@"rm -rf $tmpdir");
 	stat.set_text(@"$(stat.get_text())\nInstallation was successful!");
 }
-
 }
-
 public class status : Label {
 	public status () {
 		set_text("Status...");
 	}
 }
- 
- 
-
-
-
-
-
-
 static int main (string[] args) {
 
     Gtk.init (ref args);
@@ -45,15 +35,6 @@ static int main (string[] args) {
     grid.row_homogeneous = false;
     grid.row_spacing = 5;
     grid.column_spacing = 400;
-
-
-
-
-
-
-
-
-
  var  stat = new status(); 
 var file_chooser = new FileChooserDialog ("Select File", window, FileChooserAction.OPEN,                               "_Cancel", ResponseType.CANCEL, "_Select", ResponseType.ACCEPT);
         if (file_chooser.run () == ResponseType.ACCEPT) {
@@ -65,14 +46,9 @@ var file_chooser = new FileChooserDialog ("Select File", window, FileChooserActi
 
 grid.attach (stat, 0,0,1,1);    
 window.add (grid);
-
     window.set_default_size (450, 50);
-
     window.destroy.connect(Gtk.main_quit);
-
     window.show_all ();
-
     Gtk.main ();
-
     return 0;
 }
