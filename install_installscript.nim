@@ -24,6 +24,6 @@ try:
   writeFile(expandTilde("~/.local/share/applications/local_installer.desktop"), desktop)
   discard execShellCmd("echo \"export PATH=$PATH:~/.local/bin\" >> ~/.bashrc")
   discard execShellCmd("chmod +x ~/.local/bin/local_installer;chmod +x ~/.local/bin/local_installer-gui")
-  echo "Installation was successful!
+  echo "Installation was successful!"
 except:
   echo "Oh no! Something went wrong!"
