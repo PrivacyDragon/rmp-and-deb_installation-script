@@ -2,22 +2,29 @@
 #Why doesn't Github realize the .vala file is for the biggest part in shell script too?
 #Ugh, I hate this. It is NOT written in vala! It is written in Shell!
 echo "Application to install: " $1
+if echo "$1" | grep -q "/"; then 
+  pathparts=(${$1//"/"/})
+  file=$pathparts[-1]
+else
+  file=$1
+fi
 
 if echo "$1" | grep -q ".deb"; then
   echo "Detected .deb structure."
   #Here installing of .deb files is handled.
-  tmpdir=$HOME/.cache/$1
+  tmpdir=$HOME/.cache/$file
   mkdir $tmpdir
-  #The command 'ar' is used to extract a .deb file.
-  ar -x $1 --output="$tmpdir"
+  cp $1 $tmpdir
   cd $tmpdir
+  #The command 'ar' is used to extract a .deb file.
+  ar -x $file  
+  if ! ls | grep -q "data.tar"; then cd */.; fi
   #And then with tar the data.tar.gz/xz is extracted.
-  if ! ls | grep -q "data.tar"; then cd *; fi #If there is no data.tar... in the directory, probably it is in the next directory.
   if ls | grep -q ".tar.xz"; then tar -xJf data.tar.xz; #If the data file is a .xz file, it should be handled as .xz
   elif ls | grep -q ".tar.gz"; then tar -xzf data.tar.gz; #Though if the data file is a .gz file, it should be handled as .gz
   else echo "ERROR: file type of data archive was not understood"; fi #If the file is not a .gz file and not a .xz file, give an error.
   cd usr
-  #'Install the files...'
+  #'Install' the files...
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
   if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the PATH if it isn't yet.
   if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
@@ -29,7 +36,7 @@ fi
 if echo "$1" | grep -q ".rpm"; then
   echo "Detected .rpm structure."
   #here installing of .rpm files is handled.
-  tmpdir=$HOME/.cache/$1
+  tmpdir=$HOME/.cache/$file
   mkdir $tmpdir
   #With rpm2cpio a .rpm file can be extracted, with the help of cpio.
   rpm2cpio $1 | cpio -id -D $tmpdir #Extract the rpm file.
