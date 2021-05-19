@@ -1,12 +1,17 @@
 import os, strformat
 
+var endmessage: string
+
 when declared(paramStr):
   if paramStr(1) == "--version":
     echo "Version: 0.1.1\nNOTE: This doesn't have to be the same version as the local_installer. This version number is the version of the installer of 'local_installer'. Not of 'local_installer' itself"
+    endmessage = ""
   elif paramStr(1) == "--help":
     echo "Usage: install_installscript [--version] [--help] [DIR/OF/local_installer]\nThis program installs the 'local_installer'. If you are in the same directory as the local_installer files, you can run this program without any other commands. If you aren't, you have to specify in which directory local_installer can be found."
+    endmessage = ""
 else:
   echo "Assuming that the local_installer files can be found in the current directory"
+  endmessage = "Oh no! Something went wrong!"
 
 try:
   createDir(expandTilde("~/.local/share/applications"))
@@ -26,4 +31,4 @@ try:
   discard execShellCmd("chmod +x ~/.local/bin/local_installer;chmod +x ~/.local/bin/local_installer-gui")
   echo "Installation was successful!"
 except:
-  echo "Oh no! Something went wrong!"
+  echo endmessage
