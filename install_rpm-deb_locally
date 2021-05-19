@@ -1,8 +1,16 @@
 #!/bin/sh
-#Why doesn't Github realize the .vala file is for the biggest part in shell script too?
-#Ugh, I hate this. It is NOT written in vala! It is written in Shell!
-echo "Application to install: " $1
-if echo "$1" | grep -q "/"; then 
+  
+if echo "$1" | grep -q "--version"; then
+  echo "Current version: 0.1.1 -- Beta"
+  exit 0
+fi
+
+if echo "$1" | grep -q "--help"; then
+  echo "Usage: local_installer <FILE>\nThis program installs a .rmp or .deb package locally and the script is usable for any user.\nBugs can be reported via Github or by sending an e-mail to <privacy_dragon@tutanota.com>."
+  exit 0
+fi
+
+if echo "$1" | grep -q "/"; then
   pathparts=(${$1//"/"/})
   file=$pathparts[-1]
 else
@@ -10,35 +18,33 @@ else
 fi
 
 if echo "$1" | grep -q ".deb"; then
+  echo "Application to install: " $1
   echo "Detected .deb structure."
   #Here installing of .deb files is handled.
   tmpdir=$HOME/.cache/$file
   mkdir $tmpdir
   cp $1 $tmpdir
   cd $tmpdir
-  #The command 'ar' is used to extract a .deb file.
-  ar -x $file  
+  ar -x $file
   if ! ls | grep -q "data.tar"; then cd */.; fi
-  #And then with tar the data.tar.gz/xz is extracted.
   if ls | grep -q ".tar.xz"; then tar -xJf data.tar.xz; #If the data file is a .xz file, it should be handled as .xz
   elif ls | grep -q ".tar.gz"; then tar -xzf data.tar.gz; #Though if the data file is a .gz file, it should be handled as .gz
   else echo "ERROR: file type of data archive was not understood"; fi #If the file is not a .gz file and not a .xz file, give an error.
   cd usr
-  #'Install' the files...
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
   if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the PATH if it isn't yet.
   if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
   cd ../../../
   rm -rf $tmpdir #Clean up the temporary dir.
   echo "Installation was successful!"
+  exit 0
 fi
-
 if echo "$1" | grep -q ".rpm"; then
+  echo "Application to install: " $1 
   echo "Detected .rpm structure."
   #here installing of .rpm files is handled.
   tmpdir=$HOME/.cache/$file
   mkdir $tmpdir
-  #With rpm2cpio a .rpm file can be extracted, with the help of cpio.
   rpm2cpio $1 | cpio -id -D $tmpdir #Extract the rpm file.
   cd $tmpdir/usr
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
@@ -47,4 +53,7 @@ if echo "$1" | grep -q ".rpm"; then
   cd ../../../
   rm -rf $tmpdir #Clean up the temporary dir.
   echo "Installation was successful!"
+  exit 0
 fi
+#If the script comes here, the input was not 'valid'
+echo "FATAL ERROR: not a valid input.\nUsage: local_installer [--help] | [--version] | <FILE>"
