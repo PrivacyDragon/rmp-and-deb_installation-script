@@ -31,7 +31,7 @@ import os, strformat
 
 var endmessage: string
 
-when declared(paramStr):
+if paramCount() == 1:
   if paramStr(1) == "--version":
     echo "Version: 0.1.1\nNOTE: This doesn't have to be the same version as the local_installer. This version number is the version of the installer of 'local_installer'. Not of 'local_installer' itself"
     endmessage = ""
