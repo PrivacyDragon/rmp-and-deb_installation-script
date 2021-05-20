@@ -44,8 +44,7 @@ static void installer(string filepath,status stat) {
         else {
                 stat.set_text(@"$(stat.get_text())\nERROR: Non-supported architecture detected!");
         }
-        Posix.system(@"mkdir $tmpdir");
-        Posix.system(@"cd $tmpdir; wget -q https://raw.githubusercontent.com/PrivacyDragon/rmp-and-deb_installation-script/main/install_rpm-deb_locally; chmod +x install_rpm-deb_locally; ./install_rpm-deb_locally $filepath");
+        Posix.system(@"local_installer $filepath");
         stat.set_text(@"$(stat.get_text())\nIf there are no errors in the console and the output above, the installation was successful!");
 }
 
