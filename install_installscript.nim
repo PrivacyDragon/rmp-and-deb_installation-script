@@ -61,8 +61,9 @@ try:
   discard execShellCmd("chmod +x ~/.local/bin/local_installer;chmod +x ~/.local/bin/local_installer-gui")
   if fileExists(expandTilde("~/.config/mimeapps.list")):
     discard execShellCmd("LINE=$(awk '/vnd.debian.binary-package/{print NR;exit;}' ~/.config/mimeapps.list); if [[ -z $LINE ]]; then sed -i '2c application/vnd.debian.binary-package=local_installer.desktop;' ~/.config/mimeapps.list; else sed -i \"$LINE c application/vnd.debian.binary-package=local_installer.desktop;\" ~/.config/mimeapps.list; fi")
+    discard execShellCmd("LINE=$(awk '/x-rpm/{print NR;exit;}' ~/.config/mimeapps.list); if [[ -z $LINE ]]; then sed -i '2c application/x-rpm=local_installer.desktop;' ~/.config/mimeapps.list; else sed -i \"$LINE c application/x-rpm=local_installer.desktop;\" ~/.config/mimeapps.list; fi")
   else:
-    writeFile(expandTilde("~/.config/mimeapps.list"), "[Added Associations]\napplication/vnd.debian.binary-package=local_installer.desktop;")
+    writeFile(expandTilde("~/.config/mimeapps.list"), "[Added Associations]\napplication/vnd.debian.binary-package=local_installer.desktop;\napplication/x-rpm=local_installer.desktop;")
   echo "Installation was successful!"
 except:
   echo endmessage
