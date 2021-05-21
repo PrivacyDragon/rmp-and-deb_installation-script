@@ -43,8 +43,9 @@ else:
   endmessage = "Oh no! Something went wrong!"
 
 try:
+  createDir(expandTilde("~/.cache"))
   createDir(expandTilde("~/.local/share/applications"))
-  createDir(expandTilde("~/.local/bin/"))
+  createDir(expandTilde("~/.local/bin"))
   when declared(paramStr):
     moveFile(&"{paramStr(1)}/local_installer", expandTilde("~/.local/bin/local_installer"))
     moveFile(&"{paramStr(1)}/local_installer-gui", expandTilde("~/.local/bin/local_installer-gui"))
@@ -58,6 +59,10 @@ try:
   writeFile(expandTilde("~/.local/share/applications/local_installer.desktop"), desktop)
   discard execShellCmd("echo \"export PATH=$PATH:~/.local/bin\" >> ~/.bashrc")
   discard execShellCmd("chmod +x ~/.local/bin/local_installer;chmod +x ~/.local/bin/local_installer-gui")
+  if fileExists(expandTilde("~/.config/mimeapps.list")):
+    discard execShellCmd("LINE=$(awk '/vnd.debian.binary-package/{print NR;exit;}' ~/.config/mimeapps.list); if [[ -z $LINE ]]; then sed -i '2c application/vnd.debian.binary-package=local_installer.desktop;' ~/.config/mimeapps.list; else sed -i \"$LINE c application/vnd.debian.binary-package=local_installer.desktop;\" ~/.config/mimeapps.list; fi")
+  else:
+    writeFile(expandTilde("~/.config/mimeapps.list"), "[Added Associations]\napplication/vnd.debian.binary-package=local_installer.desktop;")
   echo "Installation was successful!"
 except:
   echo endmessage
