@@ -29,7 +29,7 @@
 #OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 if echo "$1" | grep -q "\-\-version"; then
-    echo "Version: 0.2.0\nNOTE: This doesn't have to be the same version as the local_installer. This version number is the version of the installer of 'local_installer'. Not of 'local_installer' itself"
+    echo "Version: 0.3.0\nNOTE: This doesn't have to be the same version as the local_installer. This version number is the version of the installer of 'local_installer'. Not of 'local_installer' itself"
     endmessage=""
 elif echo "$1" | grep -q "\-\-help"; then
     echo "Usage: install_installscript [--version] [--help] [DIR/OF/local_installer]\nThis program installs the 'local_installer'. If you are in the same directory as the local_installer files, you can run this program without any other commands. If you aren't, you have to specify in which directory local_installer can be found."
