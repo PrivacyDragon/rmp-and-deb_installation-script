@@ -70,4 +70,3 @@ else
   echo "[Added Associations]\napplication/vnd.debian.binary-package=local_installer.desktop;\napplication/x-rpm=local_installer.desktop;" > ~/.config/mimeapps.list
 fi
 echo "Installation was successful!"
-exit 0
