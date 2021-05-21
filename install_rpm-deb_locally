@@ -86,3 +86,4 @@ if echo "$1" | grep -q ".rpm"; then
 fi
 #If the script comes here, the input was not 'valid'
 echo "FATAL ERROR: not a valid input.\nUsage: local_installer [--help] | [--version] | <FILE>"
+exit 1
