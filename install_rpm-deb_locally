@@ -40,8 +40,8 @@ if echo "$1" | grep -q "\-\-help"; then
 fi
 
 if echo "$1" | grep -q "/"; then
-  pathparts=(${$1//"/"/})
-  file=$pathparts[-1]
+  path=$1
+  file=${path##*/}
 else
   file=$1
 fi
