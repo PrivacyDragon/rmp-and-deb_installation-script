@@ -34,7 +34,6 @@ static void installer(string filepath,status stat) {
         string[] fileparts = filepath.split("/");
         string filename = fileparts[fileparts.length - 1];
         stat.set_text(@"Status...\nApplication to install: $filename");
-        string tmpdir = "$HOME/.cache/" + filename;
         if (".deb" in filename) {
                 stat.set_text(@"$(stat.get_text())\nDetected .deb architecture.");
         }
@@ -44,10 +43,10 @@ static void installer(string filepath,status stat) {
         else {
                 stat.set_text(@"$(stat.get_text())\nERROR: Non-supported architecture detected!");
         }
-        if (Posix.system(@"local_installer $filepath")) {
+	int result = Posix.system(@"local_installer $filepath");
+	if (result == 0) {
 		stat.set_text(@"$(stat.get_text())\nInstallation was succesfull!");
-	}
-	else {
+	} else {
 		stat.set_text(@"$(stat.get_text())\nOh no! Something went wrong!");
 	}
 }
