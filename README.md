@@ -14,3 +14,6 @@ GUI version: `local_installer-gui`, select a file.
 
 ## Known problems
 * The GUI is probably kinda messy (I might fix this once I am done with the other things, but it has a quite low priority).
+
+## TODO
+* Build in some checks
