@@ -43,10 +43,10 @@ else:
   endmessage = "Oh no! Something went wrong!"
 
 try:
-  createDir(expandTilde("~/.cache"))
+  createDir(expandTilde("~/.config"))
   createDir(expandTilde("~/.local/share/applications"))
   createDir(expandTilde("~/.local/bin"))
-  when declared(paramStr):
+  if paramCount() == 1:
     moveFile(&"{paramStr(1)}/local_installer", expandTilde("~/.local/bin/local_installer"))
     moveFile(&"{paramStr(1)}/local_installer-gui", expandTilde("~/.local/bin/local_installer-gui"))
   else:
