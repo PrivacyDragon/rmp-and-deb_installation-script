@@ -44,8 +44,12 @@ static void installer(string filepath,status stat) {
         else {
                 stat.set_text(@"$(stat.get_text())\nERROR: Non-supported architecture detected!");
         }
-        Posix.system(@"local_installer $filepath");
-        stat.set_text(@"$(stat.get_text())\nIf there are no errors in the console and the output above, the installation was successful!");
+        if (Posix.system(@"local_installer $filepath")) {
+		stat.set_text(@"$(stat.get_text())\nInstallation was succesfull!");
+	}
+	else {
+		stat.set_text(@"$(stat.get_text())\nOh no! Something went wrong!");
+	}
 }
 
 public class status : Label {
@@ -66,13 +70,19 @@ static int main (string[] args) {
         grid.attach (stat, 0,0,1,1);
         window.add(grid);
         window.set_default_size(300,300);
-        var file_chooser = new FileChooserDialog ("Select File", window, FileChooserAction.OPEN, "_Cancel", ResponseType.CANCEL, "_Select", ResponseType.ACCEPT);
-        if (file_chooser.run () == ResponseType.ACCEPT) {
-                char *filename;
-                filename = file_chooser.get_filename ();
-                installer((string)filename, stat);
-        }
-        file_chooser.destroy ();
+	if (args.length != 2) {
+        	var file_chooser = new FileChooserDialog ("Select File", window, FileChooserAction.OPEN, "_Cancel", ResponseType.CANCEL, "_Select", ResponseType.ACCEPT);
+        	if (file_chooser.run () == ResponseType.ACCEPT) {
+        	        char *filename;
+        	        filename = file_chooser.get_filename ();
+        	        installer((string)filename, stat);
+        	}
+        	file_chooser.destroy ();
+	}
+	else {
+		string filename = args[1];
+		installer(filename, stat);
+	}
     	window.destroy.connect(Gtk.main_quit);
     	window.show_all ();
     	Gtk.main ();
