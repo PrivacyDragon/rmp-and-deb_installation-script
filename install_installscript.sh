@@ -45,11 +45,11 @@ if ! [[ -z $1 ]]; then
   mv $1/local_installer, ~/.local/bin/local_installer
   mv $1/local_installer-gui, ~/.local/bin/local_installer-gui
 else
-  mv local_installer, ~/.local/bin/local_installer
-  mv local_installer-gui, ~/.local/bin/local_installer-gui
+  mv local_installer ~/.local/bin/local_installer
+  mv local_installer-gui ~/.local/bin/local_installer-gui
 fi
 desktopfile="[Desktop Entry]\nName=LocalInstaller\nComment=Locally install programs\nExec=\"~/.local/bin/local_installer-gui\"\nTerminal=False\nType=Application\nCategories=Utility;"
-echo desktopfile > ~/.local/share/applications/local_installer.desktop
+printf "$desktopfile" > ~/.local/share/applications/local_installer.desktop
 echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc
 chmod +x ~/.local/bin/local_installer
 chmod +x ~/.local/bin/local_installer-gui
@@ -67,6 +67,6 @@ if [ -e ~/.config/mimeapps.list ]; then
      sed -i "$LINE c application/x-rpm=local_installer.desktop;" ~/.config/mimeapps.list
    fi
 else
-  echo "[Added Associations]\napplication/vnd.debian.binary-package=local_installer.desktop;\napplication/x-rpm=local_installer.desktop;" > ~/.config/mimeapps.list
+  printf "[Added Associations]\napplication/vnd.debian.binary-package=local_installer.desktop;\napplication/x-rpm=local_installer.desktop;" > ~/.config/mimeapps.list
 fi
 echo "Installation was successful!"
