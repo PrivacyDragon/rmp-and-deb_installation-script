@@ -30,20 +30,17 @@
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 if echo "$1" | grep -q "\-\-version"; then
     echo "Version: 0.3.0\nNOTE: This doesn't have to be the same version as the local_installer. This version number is the version of the installer of 'local_installer'. Not of 'local_installer' itself"
-    endmessage=""
 elif echo "$1" | grep -q "\-\-help"; then
     echo "Usage: install_installscript [--version] [--help] [DIR/OF/local_installer]\nThis program installs the 'local_installer'. If you are in the same directory as the local_installer files, you can run this program without any other commands. If you aren't, you have to specify in which directory local_installer can be found."
-    endmessage=""
 else
   echo "Assuming that the local_installer files can be found in the current directory"
-  endmessage="Oh no! Something went wrong!"
 fi
 mkdir "~/.config" 2>/dev/null
 mkdir "~/.local/share/applications" 2>/dev/null
 mkdir "~/.local/bin" 2>/dev/null
 if ! [[ -z $1 ]]; then
-  mv $1/local_installer, ~/.local/bin/local_installer
-  mv $1/local_installer-gui, ~/.local/bin/local_installer-gui
+  mv $1/local_installer ~/.local/bin/local_installer
+  mv $1/local_installer-gui ~/.local/bin/local_installer-gui
 else
   mv local_installer ~/.local/bin/local_installer
   mv local_installer-gui ~/.local/bin/local_installer-gui
