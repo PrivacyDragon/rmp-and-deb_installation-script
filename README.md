@@ -17,3 +17,4 @@ GUI version: `local_installer-gui`, select a file.
 
 ## TODO
 * Build in some checks
+* Make sure the .desktop files point to local locations.
