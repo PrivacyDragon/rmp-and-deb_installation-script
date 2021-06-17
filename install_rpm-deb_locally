@@ -30,7 +30,7 @@
 #OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 if echo "$1" | grep -q "\-\-version"; then
-  echo "Current version: 0.1.2 -- Beta"
+  echo "Current version: 0.1.3 -- Beta"
   exit 0
 fi
 
@@ -60,9 +60,20 @@ if echo "$1" | grep -q ".deb"; then
   elif ls | grep -q ".tar.gz"; then tar -xzf data.tar.gz; #Though if the data file is a .gz file, it should be handled as .gz
   else echo "ERROR: file type of data archive was not understood"; fi #If the file is not a .gz file and not a .xz file, give an error.
   cd usr
+  if ls share | grep -q "applications"; then  #If there is a .desktop file, change the Exec to the correct location of the binary.
+    cd share/applications
+    LINE=$(awk '/Exec/{print NR;exit;}' *)
+    if cat * | grep -q "/usr/bin"; then
+      NAME=$(cat * | awk '{split ($0,a,"Exec=\"/usr/bin/"); print a[2]}')
+    else
+      NAME=$(cat * | awk '{split ($0,a,"Exec=\"/usr/share/bin/"); print a[2]}')
+    fi
+    sed -i "$LINE c Exec=$HOME/.local/bin/$NAME"
+    cd ../../
+  fi
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
   if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the PATH if it isn't yet.
-  if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
+  if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin" >> $HOME/.bashrc; fi #Make sure that .local/bin is added to the Path every time.
   cd ../../../
   rm -rf $tmpdir #Clean up the temporary dir.
   echo "Installation was successful!"
@@ -76,9 +87,20 @@ if echo "$1" | grep -q ".rpm"; then
   mkdir $tmpdir
   rpm2cpio $1 | cpio -id -D $tmpdir #Extract the rpm file.
   cd $tmpdir/usr
+  if ls share | grep -q "applications"; then  #If there is a .desktop file, change the Exec to the correct location of the binary.
+    cd share/applications
+    LINE=$(awk '/Exec/{print NR;exit;}' *)
+    if cat * | grep -q "/usr/bin"; then
+      NAME=$(cat * | awk '{split ($0,a,"Exec=\"/usr/bin/"); print a[2]}')
+    else
+      NAME=$(cat * | awk '{split ($0,a,"Exec=\"/usr/share/bin/"); print a[2]}')
+    fi
+    sed -i "$LINE c Exec=$HOME/.local/bin/$NAME"
+    cd ../../
+  fi
   cp -r * $HOME/.local/ #Copy the files to the .local folder, where all local programs and stuff is standard stored.
   if ! echo $PATH | grep /\.local/bin; then export PATH=$PATH:~/.local/bin; fi #Add .local/bin to the path if it isn't yet.
-  if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin"; fi #Make sure that .local/bin is added to the Path every time.
+  if ! cat $HOME/.bashrc | grep /\.local/bin; then echo "export PATH=$PATH:~/.local/bin" >> $HOME/.bashrc; fi #Make sure that .local/bin is added to the Path every time.
   cd ../../../
   rm -rf $tmpdir #Clean up the temporary dir.
   echo "Installation was successful!"
